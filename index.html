@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Header</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <style>
         body {
             margin: auto;
@@ -21,7 +22,6 @@
             margin: 10px auto;
             width: 100%;
             border-radius: 75px;
-          
         }
 
         .header h1 {
@@ -57,70 +57,73 @@
             .nav {
                 margin-top: 10px;
             }
-            
-          
         }
-        main{
-                width: 95vw;
-                margin: auto;
-            }
+
+        main {
+            width: 95vw;
+            margin: auto;
+        }
+
         .autotab {
-                width: 100%;
-                height: 50vh;
-                background-color: #b97474;
-                border-radius: 10px;
-                margin-top: 20px;
-            }
-            .info {
-                width: 100%;
-                height: 100vh;
-                background-color: #000000;
-                border-radius: 10px;
-                margin-top: 20px;
-            }
-            
-    .slider-container {
-      position: relative;
-      max-width: 800px;
-      margin: 50px auto;
-      overflow: hidden;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-    }
+            width: 100%;
+            height: 30vh;
+            background-color: #b97474;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
 
-    .slide {
-      display: none;
-      width: 100%;
-    }
+        .info {
+            width: 100%;
+            height: 100vh;
+            background-color: #000000;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
 
-    .slide img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+        /* Swiper Styles */
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
 
-    .prev, .next {
-      cursor: pointer;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0,0,0,0.5);
-      color: white;
-      padding: 10px;
-      font-size: 18px;
-      border: none;
-      border-radius: 5px;
-      z-index: 1;
-    }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #eee;
+        }
 
-    .prev {
-      left: 10px;
-    }
+        /* Image Styling */
+        .swiper-slide img {
+            width: 100%;         /* Ensure image takes full width of the container */
+            height: 100%;        /* Ensure image takes full height of the container */
+            object-fit: cover;   /* Ensures image maintains aspect ratio and covers the entire area */
+            border-radius: 10px; /* Optional: keeps the rounded corners of the images */
+        }
 
-    .next {
-      right: 10px;
-    }
-    
+        /* Swiper Navigation Button Styles */
+        .swiper-button-next, .swiper-button-prev {
+            width: 30px; /* Smaller size for the buttons */
+            height: 30px;
+            background-color: white; /* White background for the buttons */
+            border-radius: 50%; /* Makes the buttons circular */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2511d4; /* Color of the arrow */
+            font-size: 20px; /* Size of the arrows */
+            opacity: 0.7; /* Slight transparency */
+            transition: opacity 0.3s;
+        }
+
+        .swiper-button-next:hover, .swiper-button-prev:hover {
+            opacity: 1; /* Full opacity on hover */
+        }
+
+        .swiper-button-next::after, .swiper-button-prev::after {
+            font-size: 18px; /* Adjust the size of the arrows */
+        }
+
     </style>
 </head>
 <body>
@@ -134,49 +137,55 @@
         </nav>
     </header>
     <main>
-    <div class="autotab">
-        <div class="slider-container">
-            <div class="slide"><img src="https://via.placeholder.com/800x400?text=Image+1" alt="Image 1"></div>
-            <div class="slide"><img src="https://via.placeholder.com/800x400?text=Image+2" alt="Image 2"></div>
-            <div class="slide"><img src="https://via.placeholder.com/800x400?text=Image+3" alt="Image 3"></div>
-          
-            <button class="prev" onclick="changeSlide(-1)">❮ Prev</button>
-            <button class="next" onclick="changeSlide(1)">Next ❯</button>
-          </div>
-          
-    </div>
-    <div class="info"></div>
+        <div class="autotab">
+            <!-- Swiper Image Slider -->
+            <div class="swiper image-slider">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="images/img1.jpg" alt="Image 1"></div>
+                    <div class="swiper-slide"><img src="images/img2.png" alt="Image 2"></div>
+                    <div class="swiper-slide"><img src="images/img3.webp" alt="Image 3"></div>
+                    <div class="swiper-slide"><img src="images/img4.png" alt="Image 4"></div>
+                    <div class="swiper-slide"><img src="images/img5.jpg" alt="Image 5"></div>
+                    <div class="swiper-slide"><img src="images/img6.jpg" alt="Image 6"></div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev" aria-label="Previous slide"></div>
+                <div class="swiper-button-next" aria-label="Next slide"></div>
+            </div>
+        </div>
+        <div class="info"></div>
     </main>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-          let slideIndex = 0;
-  let slides = document.querySelectorAll('.slide');
-  let autoSlideInterval;
-
-  function showSlide(index) {
-    slides.forEach((slide, i) => {
-      slide.style.display = (i === index) ? 'block' : 'none';
-    });
-  }
-
-  function changeSlide(n) {
-    slideIndex = (slideIndex + n + slides.length) % slides.length;
-    showSlide(slideIndex);
-    resetAutoSlide();
-  }
-
-  function autoSlide() {
-    slideIndex = (slideIndex + 1) % slides.length;
-    showSlide(slideIndex);
-  }
-
-  function resetAutoSlide() {
-    clearInterval(autoSlideInterval);
-    autoSlideInterval = setInterval(autoSlide, 5000);
-  }
-
-  // Initialize
-  showSlide(slideIndex);
-  autoSlideInterval = setInterval(autoSlide, 5000);
+        // Initialize Swiper for automatic slide change with responsive settings
+        const swiper = new Swiper('.image-slider', {
+            loop: true,
+            autoplay: {
+                delay: 3000, // Auto slide every 3 seconds
+                disableOnInteraction: false, // Keeps autoplay active even after user interaction
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                0: {
+                    slidesPerView: 1,  // 1 slide on small screens (mobile)
+                },
+                768: {
+                    slidesPerView: 2,  // 2 slides on medium screens (tablets)
+                },
+                1024: {
+                    slidesPerView: 3,  // 3 slides on large screens (desktops)
+                },
+            },
+        });
     </script>
 </body>
 </html>
