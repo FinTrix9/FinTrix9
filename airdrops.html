@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINTRIX9</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1aff, #6c63ff);
+      color: white;
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 10px auto;
+      width: 90%;
+      border-radius: 25px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      height: 50px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav a:hover {
+      background-color: #ffffff;
+      color: #2511d4;
+      transform: scale(1.05);
+    }
+
+    main {
+      width: 90%;
+      margin: 20px auto;
+      padding-bottom: 40px;
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .search-container input {
+      padding: 10px 20px;
+      width: 300px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+      outline: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-container button {
+      background-color: #0066ff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .search-container button:hover {
+      
+      background-color: blue;
+    }
+
+    .tag-filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .tag {
+      background-color: #2196f3;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .tag:hover {
+      background-color: #1976d2;
+    }
+
+    .tag.selected {
+      background-color: #ff9800 !important;
+      color: #fff;
+      font-weight: bold;
+      box-shadow: 0 0 5px rgba(255, 152, 0, 0.8);
+    }
+
+    .boxes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .box {
+      position: relative; /* For positioning the "Confirmed" tag */
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #1e1e2f, #3b3b5c);
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 20px;
+      gap: 12px;
+      margin: 15px;
+    }
+
+    .confirmed-tag {
+      position: absolute;
+      top: 10px;
+      right: -30px;
+      background-color: #4CAF50; /* Green */
+      color: white;
+      padding: 4px 12px;
+      transform: rotate(45deg);
+      font-size: 12px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .box img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid white;
+      margin-bottom: 10px;
+    }
+
+    .box h2 {
+      color: #ffffff;
+      text-align: center;
+      margin: 10px 0 5px;
+      font-size: 1.2rem;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .tag-in-box {
+      background-color: #45a049;
+      color: white;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+
+    .box p {
+      color: #dcdcdc;
+      text-align: center;
+      margin: 0 10px;
+      font-size: 0.9rem;
+      flex-grow: 1;
+    }
+
+    .join-btn {
+      padding: 12px 24px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .join-btn:hover {
+      background-color: #45a049;
+      transform: scale(1.1);
+    }
+
+    .join-btn:focus {
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .boxes {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .header {
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px 15px;  /* Smaller padding */
+    border-radius: 50px; /* Slightly tighter radius */
+  }
+
+  .header h1 {
+    font-size: 1.8rem;   /* Smaller font for title */
+  }
+
+  .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 8px;
+  }
+
+  .nav a {
+    font-size: 14px;     /* Smaller nav text */
+    padding: 8px 12px;   /* Reduced button size */
+  }
+    }
+
+    @media (max-width: 650px) {
+      .nav a {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  /* Increased slider height for small screens */
+  .autotab {
+    height: 30vh;
+  }
+   .nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 8px;
+  }
+      .boxes {
+        grid-template-columns: 1fr;
+      }
+      .box {
+        width: 90%;
+        margin-bottom: 20px;
+        padding: 20px;
+      }
+    }
+
+    .footer {
+      background: #404142;
+      color: white;
+      padding: 30px 20px;
+      margin-top: 40px;
+      text-align: center;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .footer-section a {
+      color: #ffffff;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .footer-section a:hover {
+      color: #3633d6;
+      text-decoration: none;
+    }
+    
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <img src="images/Black_And_White_Modern_Typographic_Simple_Virus_Apparel_Logo__1_-removebg-preview.png" alt="FinTrix9 Logo" class="logo">
+    <nav class="nav">
+      <a href="#home">Home</a>
+      <a href="#airdrops">Airdrops</a>
+      <a href="#news">News</a>
+      <a href="#contact">Daily Task</a>
+      <a href="#about">About</a>
+      <a href="#donate">Donate</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="search-container">
+      <input type="text" id="search-box" placeholder="Search by box name..." oninput="filterBoxes()">
+      <button onclick="clearSearch()">Clear</button>
+    </div>
+
+    <div class="tag-filter-container">
+      <button class="tag" onclick="toggleTagFilter('Depin')">DEPIN</button>
+      <button class="tag" onclick="toggleTagFilter('Node')">NODE</button>
+      <button class="tag" onclick="toggleTagFilter('Wallet')">WALLET</button>
+      <button class="tag" onclick="toggleTagFilter('Telegram')">TELEGRAM</button>
+      <button class="tag" onclick="toggleTagFilter('Web3')">WEB3</button>
+      <button class="tag" onclick="toggleTagFilter('Staking')">STAKING</button>
+    </div>
+
+    <div class="boxes" id="box-container">
+      <!-- Box 1 -->
+      <div id="box1" class="box" data-name="Grass" data-tags="solana, Node ,listed">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="images/grassLOGO.png" alt="Grass">
+        <h2>GRASS</h2>
+        <div class="tags">
+          <span class="tag-in-box">NODE</span>
+          <span class="tag-in-box">SOLANA</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="GRASS" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+      <div class="box" data-name="Gradient" data-tags="CSS, Color">
+        <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
+        <img src="imggradient.jpg" alt="Gradient">
+        <h2>GRADIENT</h2>
+        <div class="tags">
+          <span class="tag-in-box">CSS</span>
+          <span class="tag-in-box">Color</span>
+        </div>
+        <p>A smooth transition between two or more colors.</p>
+        <button class="join-btn">Join Airdrop</button>
+      </div>
+
+      <!-- Other Boxes... -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <a href="#home">Home</a><br>
+        <a href="#airdrops">Airdrops</a><br>
+        <a href="#news">News</a><br>
+        <a href="#donate">Donate</a><br>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <a href="#contact">Contact Us</a><br>
+        <a href="#about">About Us</a><br>
+      </div>
+      <div class="footer-section">
+        <h3>Social Media</h3>
+        <a href="#">Facebook</a><br>
+        <a href="#">Twitter</a><br>
+        <a href="#">Instagram</a><br>
+      </div>
+    </div>
+    <p>&copy; 2025 FinTrix9. All Rights Reserved.</p>
+  </footer>
+
+  <!-- <script>
+  // Global state to keep track of selected tags
+  let selectedTags = [];
+
+  // Function to filter boxes by name and selected tags
+  function filterBoxes() {
+    const searchValue = document.getElementById('search-box').value.toLowerCase();
+    const boxes = document.querySelectorAll('.box');
+    
+    boxes.forEach(box => {
+      const boxName = box.getAttribute('data-name').toLowerCase();
+      const boxTags = box.getAttribute('data-tags').toLowerCase().split(',').map(tag => tag.trim());
+      
+      // Check if the box name matches the search term
+      const matchesSearch = boxName.includes(searchValue);
+      
+      // Check if the box contains all selected tags
+      const matchesTags = selectedTags.every(tag => boxTags.includes(tag.toLowerCase()));
+      
+      // Show or hide the box based on matches
+      if (matchesSearch && matchesTags) {
+        box.style.display = 'block'; // Keep the box visible
+      } else {
+        box.style.display = 'none'; // Hide the box if it doesn't match
+      }
+    });
+  }
+
+  // Function to clear the search box and selected tags
+  function clearSearch() {
+    document.getElementById('search-box').value = '';
+    selectedTags = []; // Clear selected tags
+    filterBoxes();  // Apply the filter after clearing
+    resetTagHighlighting(); // Reset tag highlighting
+  }
+
+  // Function to toggle the tag filter
+  function toggleTagFilter(tag) {
+    if (selectedTags.includes(tag)) {
+      selectedTags = selectedTags.filter(t => t !== tag); // Remove the tag if it's already selected
+    } else {
+      selectedTags.push(tag); // Add the tag to the selected tags array
+    }
+    
+    filterBoxes(); // Apply the filter whenever the tag selection changes
+    updateTagHighlighting(); // Update the tag highlighting
+  }
+
+  // Function to highlight selected tags
+  function updateTagHighlighting() {
+    const tags = document.querySelectorAll('.tag');
+    tags.forEach(tag => {
+      if (selectedTags.includes(tag.textContent.trim())) {
+        tag.classList.add('selected');
+      } else {
+        tag.classList.remove('selected');
+      }
+    });
+  }
+
+  // Function to reset tag highlighting (used by the clear search button)
+  function resetTagHighlighting() {
+    const tags = document.querySelectorAll('.tag');
+    tags.forEach(tag => {
+      tag.classList.remove('selected');
+    });
+  }
+
+  // Initialize by showing all boxes and updating the tag highlights
+  window.onload = function() {
+    filterBoxes();
+    updateTagHighlighting();
+  };
+</script> -->
+
+  </script>
+</body>
+</html>
