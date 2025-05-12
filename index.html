@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Responsive Header</title>
+  <title> FINTRIX9</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <style>
     body {
@@ -29,17 +29,14 @@
       z-index: 1000;
     }
 
-    .header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      font-weight: bold;
-      text-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s ease;
-    }
+    .logo {
+  height: 50px;
+  transition: transform 0.3s ease;
+}
 
-    .header h1:hover {
-      transform: scale(1.05);
-    }
+.logo:hover {
+  transform: scale(1.05);
+}
 
     .nav {
       display: flex;
@@ -310,6 +307,10 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
+.hidden {
+  display: none !important;
+}
+
 
 .see-more-btn:hover {
   background-color: #2511d4;
@@ -376,10 +377,11 @@ background: linear-gradient(90deg, rgba(64, 65, 66, 1) 0%, rgba(0, 0, 0, 1) 51%,
 </head>
 <body>
   <header class="header">
-    <h1>FinTrix9</h1>
+    <img src="images/Black_And_White_Modern_Typographic_Simple_Virus_Apparel_Logo__1_-removebg-preview.png" alt="FinTrix9 Logo" class="logo">
+
     <nav class="nav">
-      <a href="#home">Home</a>
-      <a href="#airdrops">Airdrops</a>
+      <a href="index.html">Home</a>
+      <a href="airdrops.html">Airdrops</a>
       <a href="#news">News</a>
       <a href="#contact">Daily Task</a>
       <a href="#about">About</a>
