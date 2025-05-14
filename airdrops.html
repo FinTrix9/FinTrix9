@@ -234,6 +234,19 @@
     }
 
     @media (max-width: 900px) {
+      .tag {
+      background-color: #2196f3;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+      .tag-filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
       .boxes {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -322,6 +335,9 @@
       color: #3633d6;
       text-decoration: none;
     }
+    .hidden {
+    display: none;
+  }
     
   </style>
 </head>
@@ -341,7 +357,8 @@
 
   <main>
     <div class="search-container">
-      <input type="text" id="search-box" placeholder="Search by box name..." oninput="filterBoxes()">
+      <input type="text" id="search-box" placeholder="Search by box name...">
+
       <button onclick="clearSearch()">Clear</button>
     </div>
 
@@ -356,7 +373,7 @@
 
     <div class="boxes" id="box-container">
       <!-- Box 1 -->
-      <div id="box1" class="box" data-name="Grass" data-tags="solana, Node ,listed">
+      <div id="box1" class="box" data-name="Grass" data-tags="solana, NODE ,listed">
         <span class="confirmed-tag">Confirmed</span> <!-- Confirmed Tag -->
         <img src="images/grassLOGO.png" alt="Grass">
         <h2>GRASS</h2>
@@ -616,81 +633,95 @@
     <p>&copy; 2025 FinTrix9. All Rights Reserved.</p>
   </footer>
 
-  <!-- <script>
-  // Global state to keep track of selected tags
+ <script>
   let selectedTags = [];
+  let debounceTimeout;
 
-  // Function to filter boxes by name and selected tags
   function filterBoxes() {
     const searchValue = document.getElementById('search-box').value.toLowerCase();
     const boxes = document.querySelectorAll('.box');
-    
+
+    let anyVisible = false;
+
     boxes.forEach(box => {
       const boxName = box.getAttribute('data-name').toLowerCase();
       const boxTags = box.getAttribute('data-tags').toLowerCase().split(',').map(tag => tag.trim());
-      
-      // Check if the box name matches the search term
+
       const matchesSearch = boxName.includes(searchValue);
-      
-      // Check if the box contains all selected tags
       const matchesTags = selectedTags.every(tag => boxTags.includes(tag.toLowerCase()));
-      
-      // Show or hide the box based on matches
+
       if (matchesSearch && matchesTags) {
-        box.style.display = 'block'; // Keep the box visible
+        box.classList.remove('hidden');
+        anyVisible = true;
       } else {
-        box.style.display = 'none'; // Hide the box if it doesn't match
+        box.classList.add('hidden');
       }
     });
+
+    const boxContainer = document.getElementById('box-container');
+    let noResultMsg = document.getElementById('no-results');
+
+    if (!anyVisible) {
+      if (!noResultMsg) {
+        noResultMsg = document.createElement('div');
+        noResultMsg.id = 'no-results';
+        noResultMsg.textContent = 'No results found.';
+        noResultMsg.style.textAlign = 'center';
+        noResultMsg.style.marginTop = '30px';
+        noResultMsg.style.color = '#888';
+        boxContainer.appendChild(noResultMsg);
+      }
+    } else {
+      if (noResultMsg) noResultMsg.remove();
+    }
   }
 
-  // Function to clear the search box and selected tags
   function clearSearch() {
     document.getElementById('search-box').value = '';
-    selectedTags = []; // Clear selected tags
-    filterBoxes();  // Apply the filter after clearing
-    resetTagHighlighting(); // Reset tag highlighting
+    selectedTags = [];
+    filterBoxes();
+    resetTagHighlighting();
   }
 
-  // Function to toggle the tag filter
   function toggleTagFilter(tag) {
     if (selectedTags.includes(tag)) {
-      selectedTags = selectedTags.filter(t => t !== tag); // Remove the tag if it's already selected
+      selectedTags = selectedTags.filter(t => t !== tag);
     } else {
-      selectedTags.push(tag); // Add the tag to the selected tags array
+      selectedTags.push(tag);
     }
-    
-    filterBoxes(); // Apply the filter whenever the tag selection changes
-    updateTagHighlighting(); // Update the tag highlighting
+    filterBoxes();
+    updateTagHighlighting();
   }
 
-  // Function to highlight selected tags
   function updateTagHighlighting() {
     const tags = document.querySelectorAll('.tag');
-    tags.forEach(tag => {
-      if (selectedTags.includes(tag.textContent.trim())) {
-        tag.classList.add('selected');
+    tags.forEach(tagElement => {
+      if (selectedTags.includes(tagElement.textContent.trim())) {
+        tagElement.classList.add('selected');
       } else {
-        tag.classList.remove('selected');
+        tagElement.classList.remove('selected');
       }
     });
   }
 
-  // Function to reset tag highlighting (used by the clear search button)
   function resetTagHighlighting() {
     const tags = document.querySelectorAll('.tag');
-    tags.forEach(tag => {
-      tag.classList.remove('selected');
-    });
+    tags.forEach(tag => tag.classList.remove('selected'));
   }
 
-  // Initialize by showing all boxes and updating the tag highlights
-  window.onload = function() {
-    filterBoxes();
+  // Use debounce for the search input
+  window.onload = function () {
+    document.getElementById('search-box').addEventListener('input', () => {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(filterBoxes, 200);
+    });
+
+    filterBoxes(); // Initial display
     updateTagHighlighting();
   };
-</script> -->
+</script>
 
-  </script>
+
+ 
 </body>
 </html>
